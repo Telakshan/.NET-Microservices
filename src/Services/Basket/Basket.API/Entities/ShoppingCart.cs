@@ -11,14 +11,7 @@ public class ShoppingCart
         UserName = username;
     }
 
-    public decimal TotalPrice
-    {
-        get
-        {
-            return Items.Select(x => x.Price).Sum();
-        }
-    }
-
+    public decimal TotalPrice => Items.Select(x => x.Price).Sum();
     public string? UserName { get; set; }
     public List<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
 }
