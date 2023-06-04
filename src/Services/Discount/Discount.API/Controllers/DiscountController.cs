@@ -10,7 +10,6 @@ namespace Discount.API.Controllers;
 public class DiscountController : ControllerBase
 {
 
-
     private readonly IDiscountRepository _repository;
 
     public DiscountController(IDiscountRepository repository)
@@ -18,7 +17,7 @@ public class DiscountController : ControllerBase
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    [HttpGet("{productName}", Name = "GetProduct")]
+    [HttpGet("{productName}", Name = "GetDiscount")]
     [ProducesResponseType(typeof(Coupon), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<Coupon>> GetDiscount(string productName)
     {
