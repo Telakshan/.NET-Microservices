@@ -18,7 +18,7 @@ public class DiscountRepository : IDiscountRepository
 
         var affected = await connection.ExecuteAsync
             ("INSERT INTO Coupon (ProductName, Description, Amount) VALUES (@ProductName, @Description, @Amount)", 
-            new { ProductName = coupon.ProductName,  Description = coupon.Description, Amount = coupon.Amount });
+            new { coupon.ProductName,  coupon.Description, coupon.Amount });
 
         //if (affected == 0) return false; else return true;
         return affected != 0;
