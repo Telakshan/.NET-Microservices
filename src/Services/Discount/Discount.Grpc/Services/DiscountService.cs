@@ -3,7 +3,6 @@ using Discount.Grpc.Entities;
 using Discount.Grpc.Protos;
 using Discount.Grpc.Repositories;
 using Grpc.Core;
-using Microsoft.AspNetCore.Authentication;
 
 namespace Discount.Grpc.Services;
 
@@ -22,22 +21,22 @@ public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
 
     public override async Task<CouponModel> CreateDiscount(CreateDiscountRequest request, ServerCallContext context)
     {
-
         var coupon = _mapper.Map<Coupon>(request.Coupon);
 
-        await _repository.CreateDiscount(coupon);
+        var created = await _repository.CreateDiscount(coupon);
+
+        if (!created)
+        {
+            throw new RpcException(new Status(StatusCode.Unavailable, $"Discount with the ProductName={request.Coupon.ProductName} couldn't be created"));
+        }
+
+        _logger.LogInformation("Discount is successfully created. ProductName: {ProductName}", coupon.ProductName);
 
         return _mapper.Map<CouponModel>(coupon);
     }
 
     public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
     {
-        var itemToBeRemoved = await _repository.GetDiscount(request.ProductName);
-
-        if (itemToBeRemoved == null) 
-        {
-            throw new RpcException(new Status(StatusCode.NotFound, $"Discount with product name {request.ProductName} is not found"));
-        }
 
         var removed = await _repository.DeleteDiscount(request.ProductName);
 
@@ -61,8 +60,22 @@ public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
         return _mapper.Map<CouponModel>(coupon);
     }
 
-    public override Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
+    public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
     {
-        var coupon = awa
+        var coupon = await _repository.GetDiscount(request.Coupon.ProductName);
+
+        if (coupon == null)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, $"Discount with productName={request.Coupon.ProductName} is not found"));
+        }
+
+        var updated = await _repository.UpdateDiscount(_mapper.Map<Coupon>(request.Coupon));
+
+        if (updated)
+        {
+            return request.Coupon;
+        }
+
+        throw new RpcException(new Status(StatusCode.Unavailable, $"Coupon wasn't updated for {request.Coupon.ProductName}; Database error"));
     }
 }

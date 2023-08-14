@@ -55,7 +55,7 @@ public class DiscountRepository : IDiscountRepository
 
         var affected = await connection.ExecuteAsync
             ("UPDATE Coupon set ProductName = @ProductName , Description = @Description, Amount = @Amount WHERE Id = @Id", 
-            new { Id = coupon.Id, ProductName = coupon.ProductName, Description = coupon.Description, Amount = coupon.Amount });
+            new { coupon.Id, coupon.ProductName, coupon.Description, coupon.Amount });
 
         return affected != 0;
 
