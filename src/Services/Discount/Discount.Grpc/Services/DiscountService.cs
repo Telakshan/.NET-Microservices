@@ -78,4 +78,21 @@ public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
 
         throw new RpcException(new Status(StatusCode.Unavailable, $"Coupon wasn't updated for {request.Coupon.ProductName}; Database error"));
     }
+
+    public override async Task GetAllDiscounts(GetAllDiscountsRequest request, IServerStreamWriter<CouponModel> responseStream, ServerCallContext context)
+    {
+        var discounts = await _repository.GetAllDiscounts();
+
+        if (discounts == null)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "Discount list id null"));
+        }
+
+        foreach (var discount in discounts)
+        {
+            var couponModel = _mapper.Map<CouponModel>(discount);
+
+            await responseStream.WriteAsync(couponModel);
+        }
+    }
 }

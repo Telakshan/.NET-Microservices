@@ -60,4 +60,18 @@ public class DiscountRepository : IDiscountRepository
         return affected != 0;
 
     }
+
+    public async Task<IEnumerable<Coupon>> GetAllDiscounts()
+    {
+        using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+
+        var coupons = await connection.QueryFirstOrDefaultAsync<IEnumerable<Coupon>>("SELECT * FROM Coupon");
+
+        if (coupons == null)
+        {
+            return Enumerable.Empty<Coupon>();
+        }
+
+        return coupons;
+    }
 }
