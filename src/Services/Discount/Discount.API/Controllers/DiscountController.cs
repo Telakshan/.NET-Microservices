@@ -25,6 +25,13 @@ public class DiscountController : ControllerBase
         return Ok(coupon);
     }
 
+    [HttpGet("GetAllDiscounts")]
+    [ProducesResponseType(typeof(IEnumerable<Coupon>), (int) HttpStatusCode.OK)]
+    public async Task<ActionResult<IEnumerable<Coupon>>> GetDiscounts()
+    {
+        return Ok(await _repository.GetAllDiscounts());
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(Coupon), (int) HttpStatusCode.OK)]
     public async Task<ActionResult<Coupon>> CreateDiscount([FromBody] Coupon coupon)

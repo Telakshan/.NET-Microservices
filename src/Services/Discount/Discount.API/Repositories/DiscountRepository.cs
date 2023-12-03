@@ -60,4 +60,37 @@ public class DiscountRepository : IDiscountRepository
         return affected != 0;
 
     }
+
+    public async Task<IEnumerable<Coupon>> GetAllDiscounts()
+    {
+        using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+
+        var coupons = new List<Coupon>();
+
+        connection.Open();
+
+        using (NpgsqlCommand command = new NpgsqlCommand("SELECT Id, ProductName, Description, Amount  FROM Coupon", connection))
+        {
+            NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+
+            while (reader.Read())
+            { 
+                var Id = Int32.Parse(reader[0].ToString() ?? string.Empty);
+                var ProductName = reader.GetString(1);
+                var Description = reader.GetString(2);
+                var Amount = Int32.Parse(reader[3].ToString() ?? string.Empty);
+                coupons.Add(new Coupon { Id = Id, ProductName = ProductName, Description = Description, Amount = Amount });
+
+            }
+        }
+
+        if (coupons == null)
+        {
+          return Enumerable.Empty<Coupon>();
+        }
+
+        connection.Close();
+
+        return coupons;
+    }
 }
