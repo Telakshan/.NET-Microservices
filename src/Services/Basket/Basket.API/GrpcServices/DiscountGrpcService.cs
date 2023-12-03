@@ -1,4 +1,5 @@
-﻿using Discount.Grpc.Protos;
+﻿using Basket.API.Entities;
+using Discount.Grpc.Protos;
 
 namespace Basket.API.GrpcServices;
 
@@ -17,4 +18,11 @@ public class DiscountGrpcService: IDiscountGrpcService
 
         return await _discountProtoServiceClient.GetDiscountAsync(discountRequest);
     }
+
+    public Task<CouponModel> GetSelectDiscounts(List<ShoppingCartRecord> shoppingCartItems)
+    {
+        throw new NotImplementedException();
+    }
+
+    public record ShoppingCartRecord(string ProductName, string ProductId);
 }

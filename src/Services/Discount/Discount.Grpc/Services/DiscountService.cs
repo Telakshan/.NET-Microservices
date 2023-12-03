@@ -95,4 +95,21 @@ public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
             await responseStream.WriteAsync(couponModel);
         }
     }
+
+    public override async Task GetSelectDiscounts(GetSelectDiscountsRequest request, IServerStreamWriter<CouponModel> responseStream, ServerCallContext context)
+    {
+        var discounts = await _repository.GetSelectDiscounts(null);
+
+        if (discounts == null)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "None of the selected items were found"));
+        }
+
+        foreach (var discount in discounts)
+        {
+            var couponModel = _mapper.Map<CouponModel>(discount);
+
+            await responseStream.WriteAsync(couponModel);
+        }
+    }
 }

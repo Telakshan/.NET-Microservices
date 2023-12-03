@@ -9,4 +9,5 @@ public interface IDiscountRepository
     Task<bool> UpdateDiscount(Coupon coupon);
     Task<bool> DeleteDiscount(string productName);
     Task<IEnumerable<Coupon>> GetAllDiscounts();
+    Task<IEnumerable<Coupon>> GetSelectDiscounts(IList<ShoppingCartRecord> products);
 }

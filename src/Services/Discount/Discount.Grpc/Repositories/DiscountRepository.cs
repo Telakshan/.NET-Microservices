@@ -63,23 +63,19 @@ public class DiscountRepository : IDiscountRepository
     }
 
     //TODO: Make this return selected productNames
-/*    public async Task<IEnumerable<Coupon>> GetSelectDiscounts(List<string> productNames)
+    public async Task<IEnumerable<Coupon>> GetSelectDiscounts(IList<ShoppingCartRecord> products)
     {
         using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
 
         var coupons = new List<Coupon>();
 
-        var listQuery = "(";
+        var productNames = products.Select(item => item.ProductName).ToArray();
 
-        foreach (var productName in productNames) 
-        {
-            listQuery += $"{productName},";
-        }
+        string query = string.Format("SELECT Id, ProductName, Description, Amount  FROM Coupon Where ProductName IN ({0})", productNames);
 
         connection.Open();
 
-        using (NpgsqlCommand command = new NpgsqlCommand(@"SELECT Id, ProductName, Description, Amount  FROM Coupon 
-                                                        W", connection))
+        using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
         {
             NpgsqlDataReader reader = await command.ExecuteReaderAsync();
 
@@ -98,13 +94,12 @@ public class DiscountRepository : IDiscountRepository
         {
             return Enumerable.Empty<Coupon>();
         }
-
+        
         connection.Close();
 
         return coupons;
 
-    }*/
-
+    }
     public async Task<IEnumerable<Coupon>> GetAllDiscounts()
     {
         using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));

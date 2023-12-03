@@ -8,6 +8,7 @@ service DiscountProtoService {
 	rpc DeleteDiscount (DeleteDiscountRequest) returns (DeleteDiscountResponse);
 	rpc UpdateDiscount (UpdateDiscountRequest) returns (CouponModel);
 	rpc GetAllDiscounts (GetAllDiscountsRequest) returns (stream CouponModel);
+	rpc GetSelectDiscounts (GetSelectDiscountsRequest) returns (stream CouponModel);
 }
 
 message GetDiscountRequest {
@@ -39,4 +40,14 @@ message CouponModel {
 
 message GetAllDiscountsRequest{
 
+}
+
+message GetSelectDiscountsRequest{
+	repeated ShoppingCartItem shoppingCartItems = 1;
+}
+
+message ShoppingCartItem
+{
+	string productName = 1;
+	string productId = 2;
 }

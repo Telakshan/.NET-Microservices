@@ -3,6 +3,7 @@ using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Runtime.CompilerServices;
 
 namespace Basket.API.Controllers;
 
@@ -44,6 +45,15 @@ public class BasketController: ControllerBase
         return Ok(await _repository.UpdateBasket(basket));
     }
 
+    [HttpPost]
+    [ProducesResponseType(typeof(ShoppingCart), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<ShoppingCart>> UpdateBasketWithSelectedProducts([FromBody] ShoppingCart basket)
+    {
+        //var basket = await _discountGrpcService.GetS
+
+        return Ok();
+    }
+ 
     [HttpDelete("{userName}", Name = "DeleteBasket")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeleteBasket(string userName)
