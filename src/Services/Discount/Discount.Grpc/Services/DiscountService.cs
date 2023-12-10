@@ -16,7 +16,7 @@ public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(_mapper));
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     public override async Task<CouponModel> CreateDiscount(CreateDiscountRequest request, ServerCallContext context)
