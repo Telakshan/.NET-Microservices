@@ -40,7 +40,7 @@ public class EmailService: IEmailService
             _logger.LogError("Email sending failed");
             return false;
         }
-
+         
         return response.IsSuccessStatusCode;
     }
 }
