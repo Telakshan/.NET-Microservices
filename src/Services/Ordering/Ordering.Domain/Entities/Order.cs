@@ -19,7 +19,20 @@ public class Order: EntityBase
     // Payment
     public string CardName { get; set; } = null!;
     public string CardNumber { get; set; } = null!;
-    public string Expiration { get; set; } = null!;
+    public DateTime Expiration { get; set; }
     public string CVV { get; set; } = null!;
     public int PaymentMethod { get; set; }
+}
+
+public enum CreditCardName 
+{ 
+    Discover,
+    VISA,
+    MasterCard
+}
+
+public enum PaymentMethod 
+{
+    Credit, 
+    Debit
 }

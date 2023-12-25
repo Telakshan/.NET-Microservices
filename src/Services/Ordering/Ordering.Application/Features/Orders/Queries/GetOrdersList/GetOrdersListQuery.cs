@@ -11,6 +11,4 @@ public class GetOrdersListQuery: IRequest<List<OrdersVm>>
     {
         UserName = userName ?? throw new ArgumentNullException(nameof(userName));
     }
-    
-
 }
