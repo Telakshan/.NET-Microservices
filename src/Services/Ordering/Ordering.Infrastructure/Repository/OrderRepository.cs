@@ -2,7 +2,6 @@
 using Ordering.Application.Contracts.Persistence;
 using Ordering.Domain.Entities;
 using Ordering.Infrastructure.Persistence;
-using System.Runtime.InteropServices;
 
 namespace Ordering.Infrastructure.Repository;
 

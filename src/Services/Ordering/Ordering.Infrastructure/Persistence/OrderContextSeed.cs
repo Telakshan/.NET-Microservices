@@ -10,7 +10,8 @@ public class OrderContextSeed
     {
         if (!orderContext.Orders.Any()) 
         {
-            orderContext.Orders.AddRange(GetPreconfiguredOrder());
+            var testOrders = GetPreconfiguredOrder();
+            orderContext.Orders.AddRange(testOrders);
             await orderContext.SaveChangesAsync();
             logger.LogInformation("Seed database associated with context {DbContextname}", typeof(OrderContext).Name);
         }
@@ -22,7 +23,8 @@ public class OrderContextSeed
         var creditCardName = faker.PickRandom<CreditCardName>();
 
         var testOrders = new Faker<Order>()
-            .RuleFor(o => o.UserName, f => f.Name.FirstName())
+            .RuleFor(o => o.UserName, (f, u) => f.Internet.UserName(u.FirstName, u.LastName))
+            .RuleFor(o => o.FirstName, f => f.Name.FirstName())
             .RuleFor(o => o.LastName, f => f.Name.LastName())
             .RuleFor(o => o.EmailAddress, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
             .RuleFor(o => o.AddressLine, f => f.Address.StreetAddress())

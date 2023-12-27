@@ -31,4 +31,11 @@ public class OrderContext: DbContext
 
         return base.SaveChangesAsync(cancellationToken);
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Order>().Property(x => x.TotalPrice).HasPrecision(18, 6);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }
