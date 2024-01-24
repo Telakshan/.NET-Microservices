@@ -17,7 +17,7 @@ public class BasketRepository : IBasketRepository
     {
         var basket = await _redisCache.GetStringAsync(userName);
 
-        if (string.IsNullOrEmpty(basket)) return null;
+   if (string.IsNullOrEmpty(basket)) return null;
 
         return JsonConvert.DeserializeObject<ShoppingCart>(basket);
 
@@ -26,8 +26,11 @@ public class BasketRepository : IBasketRepository
     public async Task<ShoppingCart?> UpdateBasket(ShoppingCart basket)
     {
         if (basket.UserName != null)
-        {
-            await _redisCache.SetStringAsync(basket.UserName, JsonConvert.SerializeObject(basket));
+        {   //expires in 1 min.
+            var options = new DistributedCacheEntryOptions { SlidingExpiration = TimeSpan.FromMinutes(1) };
+            //var options = new DistributedCacheEntryOptions { SlidingExpiration = TimeSpan.FromDays(7) };
+
+            await _redisCache.SetStringAsync(basket.UserName, JsonConvert.SerializeObject(basket), options);
 
             return await GetBasket(basket.UserName);
         }
@@ -39,6 +42,5 @@ public class BasketRepository : IBasketRepository
     {
         await _redisCache.RemoveAsync(userName);
     }
-
 }
 

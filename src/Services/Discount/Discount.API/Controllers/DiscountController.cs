@@ -53,5 +53,4 @@ public class DiscountController : ControllerBase
     {
         return Ok(await _repository.DeleteDiscount(productName));
     }
-
 }

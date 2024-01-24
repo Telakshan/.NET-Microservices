@@ -75,10 +75,10 @@ public class DiscountRepository : IDiscountRepository
 
             while (reader.Read())
             { 
-                var Id = Int32.Parse(reader[0].ToString() ?? string.Empty);
+                var Id = int.Parse(reader[0].ToString() ?? string.Empty);
                 var ProductName = reader.GetString(1);
                 var Description = reader.GetString(2);
-                var Amount = Int32.Parse(reader[3].ToString() ?? string.Empty);
+                var Amount = int.Parse(reader[3].ToString() ?? string.Empty);
                 coupons.Add(new Coupon { Id = Id, ProductName = ProductName, Description = Description, Amount = Amount });
 
             }
