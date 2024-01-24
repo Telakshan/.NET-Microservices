@@ -58,7 +58,7 @@ namespace DiscountGrpc.Tests
 
             var coupon = _fixture.Build<CouponModel>()
                              .With(x => x.Id, 1)
-                             .Create();
+                           .Create();
 
             var createDiscountRequest = _fixture.Build<CreateDiscountRequest>()
                                                 .With(x => x.Coupon, coupon)
