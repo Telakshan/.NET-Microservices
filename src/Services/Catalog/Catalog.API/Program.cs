@@ -1,3 +1,4 @@
+using Catalog.API.Configuration;
 using Catalog.API.Data;
 using Catalog.API.Repositories;
 
@@ -11,6 +12,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICatalogContext, CatalogContext>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+//Add configurations
+builder.Services.Configure<MongoConfig>(builder.Configuration.GetSection(nameof(MongoConfig)));
 
 var app = builder.Build();
 
