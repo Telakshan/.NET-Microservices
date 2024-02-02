@@ -22,13 +22,7 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Uni
 
     public async Task<Unit> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        var orderToUpdate = await _orderRepository.GetByIdAsync(request.Id);
-            
-        if (orderToUpdate == null)
-        {
-            throw new NotFoundException(nameof(Order), request.Id);
-        }
-
+        var orderToUpdate = await _orderRepository.GetByIdAsync(request.Id) ?? throw new NotFoundException(nameof(Order), request.Id);
         _mapper.Map(request, orderToUpdate, typeof(UpdateOrderCommand), typeof(Order));
 
         await _orderRepository.UpdateAsync(orderToUpdate);
