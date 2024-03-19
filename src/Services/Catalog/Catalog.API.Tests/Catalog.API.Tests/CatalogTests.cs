@@ -26,7 +26,7 @@ public class CatalogTests
             {
                 ConnectionString = "mongodb://localhost:27017",
                 DatabaseName = "ProductDb",
-                CollectionString = "Products"
+                CollectionName = "Products"
             });
 
         _productsCollection = new Mock<IMongoCollection<Product>>();

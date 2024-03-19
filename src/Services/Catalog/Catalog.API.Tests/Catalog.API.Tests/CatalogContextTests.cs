@@ -16,7 +16,7 @@ public class CatalogContextTests
             new MongoConfig {
                 ConnectionString = "mongodb://localhost:27017", 
                 DatabaseName = databaseNamespace.ToString(), 
-                CollectionString = "Products"
+                CollectionName = "Products"
             });
     }
 

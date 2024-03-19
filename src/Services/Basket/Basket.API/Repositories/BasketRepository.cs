@@ -37,7 +37,8 @@ public class BasketRepository : IBasketRepository
             }
         }
 
-        if (basket.UserName != null) { 
+        if (basket.UserName != null) 
+        { 
             var options = new DistributedCacheEntryOptions { SlidingExpiration = TimeSpan.FromDays(7) };
 
             await _redisCache.SetStringAsync(basket.UserName, JsonConvert.SerializeObject(basket), options);

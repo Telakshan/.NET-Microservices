@@ -16,7 +16,7 @@ public class CatalogContext : ICatalogContext
 
         var database = client.GetDatabase(_mongoConfig.Value.DatabaseName);
 
-        Products = database.GetCollection<Product>(_mongoConfig.Value.CollectionString);
+        Products = database.GetCollection<Product>(_mongoConfig.Value.CollectionName);
 
         CatalogContextSeed.SeedData(Products);
     }
