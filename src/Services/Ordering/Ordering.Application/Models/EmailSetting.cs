@@ -2,7 +2,7 @@
 
 public class EmailSetting
 {
-    public string ApiKey { get; set; }
-    public string FromAddress { get; set; } 
-    public string FromName { get; set; }
+    public string ApiKey { get; set; } = null!;
+    public string FromAddress { get; set; } = null!;
+    public string FromName { get; set; } = null!;
 }

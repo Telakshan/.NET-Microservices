@@ -1,8 +1,13 @@
-﻿namespace Catalog.API.Configuration;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Catalog.API.Configuration;
 
 public class MongoConfig
 {
-    public string ConnectionString { get; set; } = null!;
-    public string DatabaseName { get; set; } = null!;
-    public string CollectionName { get; set; } = null!;
+    [Required]
+    public string ConnectionString { get; init; } = null!;
+    [Required]
+    public string DatabaseName { get; init; } = null!;
+    [Required]
+    public string CollectionName { get; init; } = null!;
 }

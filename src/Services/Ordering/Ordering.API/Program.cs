@@ -10,7 +10,12 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Add configuration
-builder.Services.Configure<AppSettings>(builder.Configuration.GetSection(nameof(AppSettings)));
+//builder.Services.Configure<AppSettings>(builder.Configuration.GetSection(nameof(AppSettings)));
+builder.Services
+    .AddOptions<AppSettings>()
+    .BindConfiguration(nameof(AppSettings))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
