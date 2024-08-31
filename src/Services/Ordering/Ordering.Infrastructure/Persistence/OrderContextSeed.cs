@@ -19,16 +19,13 @@ public class OrderContextSeed
 
     private static IEnumerable<Order> GetPreconfiguredOrder()
     {
-        var faker = new Faker();
-        var creditCardName = faker.PickRandom<CreditCardName>();
-
         var testOrders = new Faker<Order>()
             .RuleFor(o => o.UserName, (f, u) => f.Internet.UserName(u.FirstName, u.LastName))
             .RuleFor(o => o.FirstName, f => f.Name.FirstName())
             .RuleFor(o => o.LastName, f => f.Name.LastName())
             .RuleFor(o => o.EmailAddress, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
             .RuleFor(o => o.AddressLine, f => f.Address.StreetAddress())
-            .RuleFor(o => o.Country, f => f.Address.Country())
+            .RuleFor(o => o.Country, f => "USA")
             .RuleFor(o => o.State, f => f.Address.State())
             .RuleFor(o => o.ZipCode, f => f.Address.ZipCode())
             .RuleFor(u => u.CardName, f => f.PickRandom<CreditCardName>().ToString())

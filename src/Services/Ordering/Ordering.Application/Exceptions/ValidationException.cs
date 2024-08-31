@@ -20,3 +20,4 @@ public class ValidationException: ApplicationException
 
     public IDictionary<string, string[]> Errors { get;}
 }
+ 
