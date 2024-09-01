@@ -2,7 +2,7 @@
 
 namespace Ordering.Application.Features.Orders.Commands.UpdateOrder;
 
-public class UpdateOrderCommand: IRequest<Unit>
+public class UpdateOrderCommand: IRequest<UpdateOrderResult>
 {
     public int Id { get; set; }
     public string? UserName { get; set; } = null!;
@@ -24,3 +24,5 @@ public class UpdateOrderCommand: IRequest<Unit>
     public string CVV { get; set; } = null!;
     public int PaymentMethod { get; set; }
 }
+
+public record UpdateOrderResult(bool IsSuccess);

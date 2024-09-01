@@ -15,6 +15,8 @@ builder.Services
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+builder.Services.AddHealthChecks();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,13 +30,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+ 
 //Comment out after seeding!
 app.MigrateDatabase<OrderContext>((context, services) =>
 {
     var logger = services.GetService<ILogger<OrderContextSeed>>() ?? throw new ArgumentNullException(nameof(ILogger<OrderContextSeed>));
     OrderContextSeed.SeedAsync(context, logger).Wait();
 });
+
+app.UseHealthChecks("/health");
 
 app.UseHttpsRedirection();
 

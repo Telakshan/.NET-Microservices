@@ -1,4 +1,6 @@
-﻿using Npgsql;
+﻿using Discount.API.Configuration;
+using Microsoft.Extensions.Options;
+using Npgsql;
 
 namespace Discount.API.Extensions;
 
@@ -12,13 +14,14 @@ public static class HostExtensions
         {
             var services = scope.ServiceProvider;
             var configuration = services.GetRequiredService<IConfiguration>();
+            var connectionString = services.GetRequiredService <IOptions<DatabaseSettings>>().Value.ConnectionString;
             var logger = services.GetRequiredService<ILogger<TContext>>(); 
             
             try
             {
                 logger.LogInformation("Migrating postgresql database");
 
-                using var connection = new NpgsqlConnection(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+                using var connection = new NpgsqlConnection(connectionString);
 
                 connection.Open();
 

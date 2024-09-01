@@ -1,21 +1,22 @@
 ﻿using Dapper;
+using Discount.Grpc.Configuration;
 using Discount.Grpc.Entities;
-using Grpc.Core;
+using Microsoft.Extensions.Options;
 using Npgsql;
 
 namespace Discount.Grpc.Repositories;
 
 public class DiscountRepository : IDiscountRepository
 {
-    private readonly IConfiguration _configuration;
-    public DiscountRepository(IConfiguration configuration)
+    private string ConnectionString = string.Empty;  
+    public DiscountRepository(IOptions<DatabaseSettings> options)
     {
-        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        ConnectionString = options.Value.ConnectionString;
     }
 
     public async Task<bool> CreateDiscount(Coupon coupon)
     {
-        using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+        using var connection = new NpgsqlConnection(ConnectionString);
 
         var affected = await connection.ExecuteAsync
             ("INSERT INTO Coupon (ProductName, Description, Amount) VALUES (@ProductName, @Description, @Amount)", 
@@ -27,7 +28,7 @@ public class DiscountRepository : IDiscountRepository
 
     public async Task<bool> DeleteDiscount(string productName)
     {
-        using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+        using var connection = new NpgsqlConnection(ConnectionString);
 
         var affected = await connection.ExecuteAsync
             ("DELETE FROM Coupon WHERE ProductName = @ProductName", new { ProductName = productName });
@@ -37,7 +38,7 @@ public class DiscountRepository : IDiscountRepository
 
     public async Task<Coupon> GetDiscount(string productName)
     {
-        using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+        using var connection = new NpgsqlConnection(ConnectionString);
 
         var coupon = await connection.QueryFirstOrDefaultAsync<Coupon>
             ("SELECT * FROM Coupon WHERE ProductName = @ProductName", new { ProductName = productName});
@@ -52,7 +53,7 @@ public class DiscountRepository : IDiscountRepository
 
     public async Task<bool> UpdateDiscount(Coupon coupon)
     {
-        using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+        using var connection = new NpgsqlConnection(ConnectionString);
 
         var affected = await connection.ExecuteAsync
             ("UPDATE Coupon set ProductName = @ProductName , Description = @Description, Amount = @Amount WHERE Id = @Id", 
@@ -107,7 +108,7 @@ public class DiscountRepository : IDiscountRepository
 
     public async Task<IEnumerable<Coupon>> GetAllDiscounts()
     {
-        using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+        using var connection = new NpgsqlConnection(ConnectionString);
 
         var coupons = new List<Coupon>();
 

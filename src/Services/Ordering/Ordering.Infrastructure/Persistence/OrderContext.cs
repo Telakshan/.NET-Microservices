@@ -20,11 +20,11 @@ public class OrderContext: DbContext
             {
                 case EntityState.Added:
                     entry.Entity.CreatedDate = DateTime.Now;
-                    entry.Entity.CreatedBy = "swn";
+                    entry.Entity.CreatedBy = "user";
                     break;
                 case EntityState.Modified:
                     entry.Entity.LastModifiedDate = DateTime.Now;
-                    entry.Entity.LastModifiedBy = "swn";
+                    entry.Entity.LastModifiedBy = "user";
                     break;
             }
         }

@@ -29,23 +29,24 @@ public class OrderController : BaseApiController
     }
 
     [HttpPut(Name = "UpdateOrder")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult> UpdateOrder([FromBody] UpdateOrderCommand command)
     {
-        await Mediator.Send(command);
-        return NoContent();
+        return Ok(await Mediator.Send(command));
     }
 
     [HttpDelete("{id}", Name = "DeleteOrder")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult> DeleteOrder(int id)
     {
         var command = new DeleteOrderCommand() { Id = id };
-        await Mediator.Send(command);  
-        return NoContent();
+        var result = await Mediator.Send(command);  
+        return Ok(result);
     }
 }

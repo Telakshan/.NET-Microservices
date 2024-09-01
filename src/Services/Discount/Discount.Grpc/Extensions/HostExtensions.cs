@@ -1,4 +1,6 @@
-﻿using Npgsql;
+﻿using Discount.Grpc.Configuration;
+using Microsoft.Extensions.Options;
+using Npgsql;
 
 namespace Discount.Grpc.Extensions;
 
@@ -12,8 +14,11 @@ public static class HostExtensions
         {
             var services = scope.ServiceProvider;
             var configuration = services.GetRequiredService<IConfiguration>();
-            var logger = services.GetRequiredService<ILogger<TContext>>(); 
-            
+            var logger = services.GetRequiredService<ILogger<TContext>>();
+
+            //Another approach
+            //var connectionString = services.GetRequiredService<IOptions<DatabaseSettings>>().Value.ConnectionString;
+
             try
             {
                 logger.LogInformation("Migrating postgresql database");
