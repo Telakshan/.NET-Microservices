@@ -22,13 +22,8 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Del
 
     public async Task<DeleteOrderResult> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
     {
-        var orderToDelete = await _orderRepository.GetByIdAsync(request.Id);
-
-        if (orderToDelete is null)
-        {
-            throw new NotFoundException(nameof(Order), request.Id);
-        }
-
+        var orderToDelete = await _orderRepository.GetByIdAsync(request.Id) ?? throw new NotFoundException(nameof(Order), request.Id);
+        
         await _orderRepository.DeleteAsync(orderToDelete);
 
         _logger.LogInformation($"Order {orderToDelete.Id} is successfully deleted.");

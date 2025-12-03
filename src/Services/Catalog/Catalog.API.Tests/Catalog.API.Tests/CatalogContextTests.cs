@@ -9,7 +9,7 @@ namespace Catalog.API.Tests;
 public class CatalogContextTests
 {
     private readonly IOptions<MongoConfig> _mongoConfig;
-    DatabaseNamespace databaseNamespace = new DatabaseNamespace("ProductDb");
+    readonly DatabaseNamespace databaseNamespace = new("ProductDb");
     public CatalogContextTests()
     {
         _mongoConfig = Options.Create(

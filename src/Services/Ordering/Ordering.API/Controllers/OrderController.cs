@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using Ordering.Application.Features.Orders.Commands.CheckoutOrder;
 using Ordering.Application.Features.Orders.Commands.DeleteOrder;
 using Ordering.Application.Features.Orders.Commands.UpdateOrder;
 using Ordering.Application.Features.Orders.Queries.GetOrderList;
 using Ordering.Application.Features.Orders.Queries.GetOrdersList;
-using System.Net;
 
 namespace Ordering.API.Controllers;
 
 public class OrderController : BaseApiController
 {
     [HttpGet("{userName}", Name = "GetOrder")]
-    [ProducesResponseType(typeof(IEnumerable<OrdersVm>), (int) HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(IEnumerable<OrdersVm>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IEnumerable<OrdersVm>>> GetOrdersByUserName(string userName)
     {
         var query = new GetOrdersListQuery(userName);
@@ -30,7 +30,6 @@ public class OrderController : BaseApiController
 
     [HttpPut(Name = "UpdateOrder")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult> UpdateOrder([FromBody] UpdateOrderCommand command)
@@ -40,13 +39,11 @@ public class OrderController : BaseApiController
 
     [HttpDelete("{id}", Name = "DeleteOrder")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult> DeleteOrder(int id)
     {
-        var command = new DeleteOrderCommand() { Id = id };
-        var result = await Mediator.Send(command);  
+        var result = await Mediator.Send(new DeleteOrderCommand() { Id = id });
         return Ok(result);
     }
 }
