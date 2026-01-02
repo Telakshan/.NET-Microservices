@@ -1,4 +1,3 @@
-version: '3.4'
 
 services:
   catalogdb:
@@ -8,7 +7,7 @@ services:
     image: redis:alpine
 
   discountdb:
-    image: postgres
+    image: postgres:15-alpine
 
   orderdb: 
     image: mcr.microsoft.com/mssql/server:latest
